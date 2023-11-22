@@ -1,9 +1,12 @@
-import React from 'react'
+import React from "react";
+import { Outlet } from "react-router-dom";
 
 const LayoutPrivate = () => {
-  return (
-    <div>LayoutPrivate</div>
-  )
-}
+    return (
+        <>
+            <Outlet />
+        </>
+    );
+};
 
-export default LayoutPrivate
+export default LayoutPrivate;
