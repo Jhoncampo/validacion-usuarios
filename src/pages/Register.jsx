@@ -4,6 +4,10 @@ import { useRedirectActiveUser } from "../hooks/useRedirectActiveUser";
 import { useUserContext } from "../context/UserContext";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { Avatar, Box, Button, TextField, Typography } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import PersonIcon from "@mui/icons-material/Person";
+import { Link } from "react-router-dom";
 
 const Register = () => {
     const { user } = useUserContext();
@@ -37,8 +41,19 @@ const Register = () => {
     });
 
     return (
-        <>
-            <h1>Register</h1>
+        <Box
+            sx={{
+                mt: "1rem",
+                maxWidth: "400px",
+                mx: "auto",
+                textAlign: "center",
+            }}
+        >
+            <Avatar sx={{mx: "auto", bgcolor: "#111"}}><PersonIcon/></Avatar>
+
+            <Typography variant="h5" component="h1">
+                Register
+            </Typography>
             <Formik
                 initialValues={{ email: "", password: "" }}
                 onSubmit={onSubmit}
@@ -51,34 +66,62 @@ const Register = () => {
                     errors,
                     touched,
                     isSubmitting,
-                    handleBlur
+                    handleBlur,
                 }) => (
-                    <form onSubmit={handleSubmit}>
-                        <input
+                    <Box
+                        component="form"
+                        sx={{ mt: "1rem" }}
+                        onSubmit={handleSubmit}
+                    >
+                        <TextField
                             type="email"
-                            placeholder="Ingrese email"
+                            placeholder="email@example.com"
                             value={values.email}
                             onChange={handleChange}
                             name="email"
                             onBlur={handleBlur}
+                            fullWidth
+                            sx={{ mb: 3 }}
+                            label="Ingrese email"
+                            error={errors.email && touched.email}
+                            helperText={
+                                errors.email && touched.email && errors.email
+                            }
                         />
-                        {errors.email && touched.email && errors.email}
-                        <input
+
+                        <TextField
                             type="password"
                             placeholder="Ingrese contraseña"
                             value={values.password}
                             onChange={handleChange}
                             name="password"
                             onBlur={handleBlur}
+                            fullWidth
+                            sx={{ mb: 3 }}
+                            label="Ingrese contraseña"
+                            error={errors.password && touched.password}
+                            helperText={
+                                errors.password &&
+                                touched.password &&
+                                errors.password
+                            }
                         />
-                        {errors.password && touched.password && errors.password}
-                        <button type="submit" disabled={isSubmitting}>
+
+                        <LoadingButton
+                            sx={{ mb: 3 }}
+                            variant="contained"
+                            loading={isSubmitting}
+                            type="submit"
+                            fullWidth
+                            disabled={isSubmitting}
+                        >
                             Register
-                        </button>
-                    </form>
+                        </LoadingButton>
+                        <Button component={Link} fullWidth to="/">¿Ya tienes cuenta? Incia sesión</Button>
+                    </Box>
                 )}
             </Formik>
-        </>
+        </Box>
     );
 };
 

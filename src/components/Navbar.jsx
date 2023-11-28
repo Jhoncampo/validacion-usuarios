@@ -4,13 +4,11 @@ import { useUserContext } from "../context/UserContext";
 
 const Navbar = () => {
     
-    const { user, setUser } = useUserContext()
+    const { user } = useUserContext()
 
 
     return (
         <nav>
-            <NavLink to="/">Home  </NavLink>
-            <NavLink to={"/register"}>  Register</NavLink>
             {user && (
                 <>
                     <NavLink to="/dashboard">Dashboard</NavLink>

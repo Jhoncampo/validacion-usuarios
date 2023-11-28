@@ -1,5 +1,6 @@
 import React from 'react'
 import { logout } from '../config/firebase'
+import { Button } from '@mui/material'
 
 const Dashboard = () => {
   const handleLogout = async () =>{
@@ -12,7 +13,7 @@ const Dashboard = () => {
   return (
       <>
          <h1>Dashboard (ruta protegida)</h1>
-         <button onClick={handleLogout}>Logout</button>
+         <Button variant='contained' onClick={handleLogout}>Logout</Button>
       </>
   );
 }

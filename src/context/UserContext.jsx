@@ -10,9 +10,7 @@ const UserProviader = ({children}) => {
     const [ user, setUser ] = useState(false)
 
     useEffect(()=>{
-        console.log("useEffect")
         const unsuscribe = onAuthStateChanged(auth, (user)=>{
-            console.log(user)
             setUser(user)
         })
         return unsuscribe

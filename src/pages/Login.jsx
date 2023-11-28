@@ -1,9 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { login } from "../config/firebase";
 import { useNavigate } from "react-router";
 import { useUserContext } from "../context/UserContext";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { Box } from "@mui/system";
+import LoginIcon from "@mui/icons-material/Login";
+import { Avatar, Button, TextField, Typography } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import { Link } from "react-router-dom";
 
 const Login = () => {
     const { user } = useUserContext();
@@ -24,12 +29,12 @@ const Login = () => {
         try {
             const credentialUser = await login({ email, password });
             console.log(credentialUser);
-            resetForm()
+            resetForm();
         } catch (error) {
             console.log(error.code);
             console.log(error.message);
-            if(error.code === "auth/invalid-login-credentials"){
-               return setErrors({email: "Usuario no registrado"})
+            if (error.code === "auth/invalid-login-credentials") {
+                return setErrors({ email: "Usuario no registrado" });
             }
         } finally {
             setSubmitting(false);
@@ -47,8 +52,20 @@ const Login = () => {
     });
 
     return (
-        <>
-            <h1>Login</h1>
+        <Box
+            sx={{
+                mt: "1rem",
+                maxWidth: "400px",
+                mx: "auto",
+                textAlign: "center",
+            }}
+        >
+            <Avatar sx={{ mx: "auto", bgcolor: "#111" }}>
+                <LoginIcon />
+            </Avatar>
+            <Typography variant="h5" component="h1">
+                Login
+            </Typography>
             <Formik
                 initialValues={{ email: "", password: "" }}
                 onSubmit={onSubmit}
@@ -63,32 +80,62 @@ const Login = () => {
                     handleBlur,
                     isSubmitting,
                 }) => (
-                    <form onSubmit={handleSubmit}>
-                        <input
+                    <Box
+                        component="form"
+                        onSubmit={handleSubmit}
+                        sx={{ mt: "1rem" }}
+                    >
+                        <TextField
                             type="email"
-                            placeholder="Ingrese email"
+                            placeholder="email@example.com"
                             value={values.email}
                             onChange={handleChange}
                             name="email"
                             onBlur={handleBlur}
+                            id="email"
+                            label="Ingrese email"
+                            fullWidth
+                            sx={{ mb: 3 }}
+                            error={errors.email && touched.email}
+                            helperText={
+                                errors.email && touched.email && errors.email
+                            }
                         />
-                        {errors.email && touched.email && errors.email}
-                        <input
+
+                        <TextField
                             type="password"
-                            placeholder="Ingrese contraseña"
                             value={values.password}
                             onChange={handleChange}
                             name="password"
                             onBlur={handleBlur}
+                            id="password"
+                            label="Ingrese contraseña"
+                            fullWidth
+                            sx={{ mb: 3 }}
+                            error={errors.password && touched.password}
+                            helperText={
+                                errors.password &&
+                                touched.password &&
+                                errors.password
+                            }
                         />
-                        {errors.password && touched.password && errors.password}
-                        <button type="submit" disabled={isSubmitting}>
+                        <LoadingButton
+                            type="submit"
+                            disabled={isSubmitting}
+                            loading={isSubmitting}
+                            variant="contained"
+                            fullWidth
+                            sx={{ mb: 3 }}
+                        >
                             Login
-                        </button>
-                    </form>
+                        </LoadingButton>
+                        <Button fullWidth component={Link} to="/register">
+                            ¿No tienes cuenta? Regístrate
+                        </Button>
+                    </Box>
                 )}
             </Formik>
-        </>
+        </Box>
     );
 };
 
